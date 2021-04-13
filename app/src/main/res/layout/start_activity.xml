@@ -7,20 +7,54 @@
     tools:context=".MainActivity">
 
     <TextView
+        android:id="@+id/start_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
+        android:text="@string/app_name"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+        android:textColor="@android:color/holo_red_dark"
+        android:textColorHighlight="@android:color/holo_red_light"
+        android:textSize="36sp"
+        android:textStyle="italic"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.117" />
 
     <Button
         android:id="@+id/button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Button"
-        tools:layout_editor_absoluteX="88dp"
-        tools:layout_editor_absoluteY="223dp" />
+        android:layout_marginBottom="80dp"
+        android:text="@string/btn_start"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <GridView
+        android:layout_width="488dp"
+        android:layout_height="426dp"
+        android:layout_marginTop="268dp"
+        android:numColumns="2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="visible" >
+
+        <TextView
+            android:id="@+id/score_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/score_title"
+            />
+
+        <TextView
+            android:id="@+id/diff_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/diff_title" />
+    </GridView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
