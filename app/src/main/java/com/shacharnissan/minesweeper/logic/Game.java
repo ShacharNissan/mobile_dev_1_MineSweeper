@@ -6,14 +6,39 @@ import java.util.Date;
 import java.util.Formatter;
 
 public class Game {
+    public static long EASY_BEST_TIME = 0;
+    public static long MEDIUM_BEST_TIME = 0;
+    public static long HARD_BEST_TIME = 0;
     private Board board;
     private Date startTime;
+    private long resultTime;
     private DifficultyEnum difficulty;
 
     public Game(DifficultyEnum difficulty) {
         this.board = new Board(difficulty);
         this.difficulty = difficulty;
         this.startTime = null;
+    }
+    private void gameEnd(){
+        resultTime = (new Date().getTime()) - startTime.getTime();
+        switch (difficulty){
+            case EASY:
+                if (EASY_BEST_TIME < resultTime) {
+                    EASY_BEST_TIME = resultTime;
+                }
+                break;
+            case MEDIUM:
+                if (MEDIUM_BEST_TIME < resultTime)
+                    MEDIUM_BEST_TIME = resultTime;
+                break;
+            case HARD:
+                if (HARD_BEST_TIME < resultTime)
+                    HARD_BEST_TIME = resultTime;
+                break;
+        }
+    }
+    public long getResultTime(){
+        return resultTime;
     }
 
     public DifficultyEnum getDifficulty(){
@@ -46,7 +71,11 @@ public class Game {
             //      DateFormat dateFormat = new SimpleDateFormat("mm:ss");
             this.startTime = new Date();
         }
-        return this.board.clickCell(index);
+        if (this.board.clickCell(index)) {
+            gameEnd();
+            return true;
+        }
+        return false;
     }
 
     public Board getBoard() {

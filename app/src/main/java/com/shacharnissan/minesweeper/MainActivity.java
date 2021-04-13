@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.shacharnissan.minesweeper.logic.Board;
 import com.shacharnissan.minesweeper.logic.DifficultyEnum;
 import com.shacharnissan.minesweeper.logic.Game;
+import com.shacharnissan.minesweeper.logic.StatusEnum;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -37,8 +38,10 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if(!game.getBoard().getCell(position).isClicked()) {
-                    if(game.clickCell(position))
-                        //game won / lose
+                    game.clickCell(position);
+                    if(game.getBoard().getStatus() != StatusEnum.CONTINUE) {
+                        finishedGame();
+                    }
                     refreshView();
                 }
             }
@@ -59,22 +62,17 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void finishedGame() {
-        Intent myIntent = new Intent(StartActivity.this, MainActivity.class);
-        DifficultyEnum diff = DifficultyEnum.EASY;
-        switch (radiogroup.getCheckedRadioButtonId()) {
-            case R.id.radioButton:
-                diff = DifficultyEnum.EASY;
-                break;
-            case R.id.radioButton2:
-                diff = DifficultyEnum.MEDIUM;
-                break;
-            case R.id.radioButton3:
-                diff = DifficultyEnum.HARD;
-                break;
+        SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putLong(getString(R.string.easy_score_tag), this.game.EASY_BEST_TIME);
+        editor.putLong(getString(R.string.med_score_tag), this.game.MEDIUM_BEST_TIME);
+        editor.putLong(getString(R.string.hard_score_tag), this.game.HARD_BEST_TIME);
+        editor.apply();
 
-        }
-        myIntent.putExtra(String.format("%d", R.string.diff_tag), String.format("%s", diff)); //Optional parameters
-        StartActivity.this.startActivity(myIntent);
+        Intent myIntent = new Intent(MainActivity.this, EndActivity.class);
+        myIntent.putExtra(String.format("%d", R.string.status_tag), game.getBoard().getStatus());
+        myIntent.putExtra(String.format("%d", R.string.time_tag), game.getResultTime());
+        MainActivity.this.startActivity(myIntent);
 
     }
 

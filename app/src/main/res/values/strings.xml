@@ -15,4 +15,10 @@
     <string name="game_time">Time:</string>
 
     <string name="diff_tag">diffTag</string>
+    <string name="status_tag">statusTag</string>
+    <string name="time_tag">timeTag</string>
+
+    <string name="easy_score_tag">easyHS</string>
+    <string name="med_score_tag">medHS</string>
+    <string name="hard_score_tag">hardHS</string>
 </resources>

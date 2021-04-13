@@ -57,11 +57,6 @@ public class Board {
                 cells[i][j].increaseMineCounter();
             }
         }
-
-
-
-
-
     }
 
     private void cleanBoard() {
@@ -86,11 +81,16 @@ public class Board {
             cells[cellI][cellJ].setType(TypeEnum.MINE_CLICKED);
             openLose();
             status = StatusEnum.LOSE;
+            return true;
         }
         else {
             openNearEmptyCells(cellI, cellJ);
         }
-        if(  checkBoard();
+        if(!checkBoard()) {
+            status = StatusEnum.CONTINUE;
+            return false;
+        }
+        return true;
     }
 
     public boolean checkBoard() {
@@ -103,6 +103,10 @@ public class Board {
         openWin();
         status = StatusEnum.WIN;
         return true;
+    }
+
+    public StatusEnum getStatus(){
+        return status;
     }
 
     private void openNearEmptyCells(int cellI, int cellJ) {
