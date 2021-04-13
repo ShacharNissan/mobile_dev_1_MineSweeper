@@ -8,74 +8,84 @@
     tools:context=".MainActivity">
 
     <TextView
-        android:id="@+id/textView_GameStatus"
+        android:id="@+id/textView_ResultTimeTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/game_win"
-        android:textColor="@color/purple_500"
-        android:textSize="24sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.502"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="266dp" />
-
-    <TextView
-        android:id="@+id/textView_ResultTime"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/time"
-        android:textColor="@color/purple_500"
-        android:textSize="24sp"
+        android:layout_marginStart="123dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="122dp"
+        android:text="@string/result_time"
+        android:textSize="30sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="446dp" />
+        app:layout_constraintTop_toBottomOf="@+id/textView_ResultStatus" />
 
     <TextView
         android:id="@+id/start_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
         android:text="@string/app_name"
         android:textAppearance="@style/TextAppearance.AppCompat.Body2"
         android:textColor="@android:color/holo_red_dark"
         android:textColorHighlight="@android:color/holo_red_light"
         android:textSize="36sp"
         android:textStyle="italic"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.117" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/start_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="128dp"
+        android:layout_marginBottom="50dp"
         android:text="@string/btn_new"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.504"
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/textView_GameOver"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="123dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="122dp"
         android:text="@string/game_over"
-        android:textSize="36sp"
+        android:textSize="30sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="193dp" />
+        app:layout_constraintTop_toBottomOf="@+id/start_title" />
 
     <TextView
-        android:id="@+id/textView_ResultTimeTitle"
+        android:id="@+id/textView_ResultStatus"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/result_time"
-        android:textSize="36sp"
+        android:layout_marginStart="174dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="179dp"
+        android:text="@string/game_win"
+        android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="383dp" />
+        app:layout_constraintTop_toBottomOf="@+id/textView_GameOver" />
+
+    <TextView
+        android:id="@+id/textView_ResultTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="174dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="179dp"
+        android:text="@string/time"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.488"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView_ResultTimeTitle" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
