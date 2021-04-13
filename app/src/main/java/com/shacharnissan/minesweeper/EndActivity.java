@@ -25,14 +25,13 @@ public class EndActivity extends AppCompatActivity {
         gameStatus = findViewById(R.id.textView_ResultTime);
         btn_start_new_game = (Button) findViewById(R.id.start_btn);
 
-        btn_start.setOnClickListener(v -> btnclicked());
-
+        btn_start_new_game.setOnClickListener(v -> btnclicked());
     }
 
     private void btnclicked() {
         Intent myIntent = new Intent(EndActivity.this, MainActivity.class);
         DifficultyEnum diff = DifficultyEnum.EASY;
-        
+
         myIntent.putExtra(String.format("%d", R.string.diff_tag), String.format("%s", diff)); //Optional parameters
         EndActivity.this.startActivity(myIntent);
 
