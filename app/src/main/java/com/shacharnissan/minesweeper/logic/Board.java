@@ -4,6 +4,7 @@ import java.util.Random;
 
 public class Board {
     private DifficultyEnum size;
+    private StatusEnum status;
     private Cell[][] cells;
 
     public Board(DifficultyEnum size) {
@@ -24,7 +25,8 @@ public class Board {
     }
 
     private void initMines() {
-        int Num_of_mines = (int)size.getValue();
+        int Num_of_mines = 1;
+        //int Num_of_mines = (int)size.getValue();
         Random rand = new Random();
         for (int i = 0; i < Num_of_mines; i++) {
             int cellNum;
@@ -47,7 +49,7 @@ public class Board {
         for (int i = cellI - 1; i <= cellI + 1 && i < size.getValue(); i++) {
             if (i < 0)
                 continue;
-            for (int j = cellJ - 1; j < cellJ + 1 && j < size.getValue(); j++) {
+            for (int j = cellJ - 1; j <= cellJ + 1 && j < size.getValue(); j++) {
                 if (j < 0)
                     continue;
                 if (i == cellI && j == cellJ)
@@ -83,18 +85,15 @@ public class Board {
         if (cells[cellI][cellJ].getType() == TypeEnum.MINE) {
             cells[cellI][cellJ].setType(TypeEnum.MINE_CLICKED);
             openLose();
+            status = StatusEnum.LOSE;
         }
-
-        openNearEmptyCells(cellI, cellJ);
-        checkBoard(index);
-
-        return true;
+        else {
+            openNearEmptyCells(cellI, cellJ);
+        }
+        if(  checkBoard();
     }
 
-    public boolean checkBoard(int index) {
-        int cellJ = index % size.getValue();
-        int cellI = index / size.getValue();
-
+    public boolean checkBoard() {
         for (int i = 0; i < size.getValue(); i++)
             for (int j = 0; j < size.getValue(); j++)
                 if (cells[i][j].getType() == TypeEnum.NUMBER)
@@ -102,6 +101,7 @@ public class Board {
                         return false;
 
         openWin();
+        status = StatusEnum.WIN;
         return true;
     }
 
@@ -112,14 +112,19 @@ public class Board {
             return;
 
         cells[cellI][cellJ].setClicked(true);
-        openNearEmptyCells(cellI - 1, cellJ - 1);
-        openNearEmptyCells(cellI - 1, cellJ);
-        openNearEmptyCells(cellI - 1, cellJ + 1);
-        openNearEmptyCells(cellI, cellJ - 1);
-        openNearEmptyCells(cellI, cellJ + 1);
-        openNearEmptyCells(cellI + 1, cellJ - 1);
-        openNearEmptyCells(cellI + 1, cellJ);
-        openNearEmptyCells(cellI + 1, cellJ + 1);
+
+        if (cells[cellI][cellJ].getNearMines() > 0)
+            return;
+
+        for (int i = cellI - 1; i <= cellI + 1 && i < size.getValue(); i++) {
+            if (i < 0)
+                continue;
+            for (int j = cellJ - 1; j <= cellJ + 1 && j < size.getValue(); j++) {
+                if (j < 0)
+                    continue;
+                cells[i][j].setClicked(true);
+            }
+        }
     }
 
     private void openWin() {
@@ -129,6 +134,7 @@ public class Board {
                     cells[i][j].setFlaged(true);
                 else if (cells[i][j].isFlaged())
                     cells[i][j].setType(TypeEnum.WRONG_FLAG);
+                cells[i][j].setClicked(true);
             }
         }
     }
@@ -136,9 +142,8 @@ public class Board {
     private void openLose() {
         for (int i = 0; i < size.getValue(); i++) {
             for (int j = 0; j < size.getValue(); j++) {
-                if (!cells[i][j].isFlaged())
-                    cells[i][j].setClicked(true);
-                else if (cells[i][j].getType() != TypeEnum.MINE)
+                cells[i][j].setClicked(true);
+                if (cells[i][j].isFlaged() && cells[i][j].getType() != TypeEnum.MINE)
                     cells[i][j].setType(TypeEnum.WRONG_FLAG);
             }
         }

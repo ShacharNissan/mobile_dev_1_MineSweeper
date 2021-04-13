@@ -57,27 +57,36 @@ public class CellAdapter extends BaseAdapter {
 
         cell.setLayoutParams(layoutParams);
 
-        switch (board.getCell(position).getType()){
-            case MINE:
-                cell.imageview.setImageDrawable(context.getDrawable(R.drawable.mine));
-                cell.imageview.setVisibility(View.VISIBLE);
-                cell.textView.setVisibility(View.INVISIBLE);
-                break;
-            case NUMBER:
-                cell.textView.setVisibility(View.VISIBLE);
-                cell.imageview.setVisibility(View.INVISIBLE);
-                cell.textView.setText(""+board.getCell(position).getNearMines());
-                break;
-            case WRONG_FLAG:
-                cell.imageview.setImageDrawable(context.getDrawable(R.drawable.wrong_flag));
-                cell.imageview.setVisibility(View.VISIBLE);
-                cell.textView.setVisibility(View.INVISIBLE);
-                break;
-            case MINE_CLICKED:
-                cell.imageview.setImageDrawable(context.getDrawable(R.drawable.mine_clicked));
-                cell.imageview.setVisibility(View.VISIBLE);
-                cell.textView.setVisibility(View.INVISIBLE);
-                break;
+        if(board.getCell(position).isClicked()) {
+            switch (board.getCell(position).getType()) {
+                case MINE:
+                    cell.imageview.setImageDrawable(context.getDrawable(R.drawable.mine));
+                    cell.textView.setVisibility(View.GONE);
+                    cell.imageview.setVisibility(View.VISIBLE);
+
+                    break;
+                case NUMBER:
+                    cell.textView.setVisibility(View.VISIBLE);
+                    cell.imageview.setVisibility(View.GONE);
+                    cell.textView.setText("" + board.getCell(position).getNearMines());
+                    break;
+                case WRONG_FLAG:
+                    cell.imageview.setImageDrawable(context.getDrawable(R.drawable.wrong_flag));
+                    cell.imageview.setVisibility(View.VISIBLE);
+                    cell.textView.setVisibility(View.INVISIBLE);
+                    break;
+                case MINE_CLICKED:
+                    cell.imageview.setImageDrawable(context.getDrawable(R.drawable.mine_clicked));
+                    cell.imageview.setVisibility(View.VISIBLE);
+                    cell.textView.setVisibility(View.INVISIBLE);
+                    break;
+            }
+        }
+
+        if(board.getCell(position).isFlaged()){
+            cell.imageview.setImageDrawable(context.getDrawable(R.drawable.flag));
+            cell.textView.setVisibility(View.GONE);
+            cell.imageview.setVisibility(View.VISIBLE);
         }
 
         return cell;

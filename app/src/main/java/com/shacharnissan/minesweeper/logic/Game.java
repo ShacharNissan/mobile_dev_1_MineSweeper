@@ -41,12 +41,12 @@ public class Game {
         this.board = new Board(difficulty);
     }
 
-    public boolean clickCell(int x, int y) {
+    public boolean clickCell(int index) {
         if (startTime == null) {
             //      DateFormat dateFormat = new SimpleDateFormat("mm:ss");
             this.startTime = new Date();
         }
-        return this.board.clickCell(x * this.difficulty.getValue() + y);
+        return this.board.clickCell(index);
     }
 
     public Board getBoard() {

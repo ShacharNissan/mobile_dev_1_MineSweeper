@@ -31,7 +31,8 @@ public class CellView extends LinearLayout {
         textView.setTextColor(Color.BLACK);
         //setBackground(getResources().getDrawable(R.drawable.mine,null));
         setBackgroundColor(Color.GRAY);
-        addView(textView);
+
         addView(imageview);
+        addView(textView);
     }
 }
