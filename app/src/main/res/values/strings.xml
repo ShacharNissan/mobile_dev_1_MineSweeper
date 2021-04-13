@@ -13,4 +13,6 @@
     <string name="game_win">You Won!</string>
     <string name="game_lose">You Lost</string>
     <string name="game_time">Time:</string>
+
+    <string name="diff_tag">diffTag</string>
 </resources>
