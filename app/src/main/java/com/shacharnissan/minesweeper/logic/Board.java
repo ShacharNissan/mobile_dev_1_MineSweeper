@@ -34,9 +34,9 @@ public class Board {
                 cellJ = cellNum % size.getValue();
                 cellI = cellNum / size.getValue();
                 check += 1;
-                if (check < 10)
+                if (check > 10)   //  try 10 times to  find empty cell for insert a mine.
                     throw new RuntimeException("Failed to fill Mines");
-            } while (cells[cellI][cellJ].getType() == TypeEnum.NUMBER);
+            } while (cells[cellI][cellJ].getType() != TypeEnum.NUMBER);
 
             cells[cellI][cellJ].setType(TypeEnum.MINE);
             increaseMineNeighbors(cellI, cellJ);
@@ -59,6 +59,9 @@ public class Board {
 
     private void cleanBoard() {
         this.cells = new Cell[size.getValue()][size.getValue()];
+        for (int i = 0; i < size.getValue(); i++)
+            for (int j = 0; j < size.getValue(); j++)
+                cells[i][j] = new Cell();
     }
 
     public boolean clickCell(int index) {

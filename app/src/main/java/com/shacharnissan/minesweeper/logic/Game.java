@@ -44,4 +44,8 @@ public class Game {
         }
         return this.board.clickCell(x * this.difficulty.getValue() + y);
     }
+
+    public Board getBoard() {
+        return board;
+    }
 }
