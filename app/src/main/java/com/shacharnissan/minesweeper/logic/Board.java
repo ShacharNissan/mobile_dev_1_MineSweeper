@@ -3,10 +3,10 @@ package com.shacharnissan.minesweeper.logic;
 import java.util.Random;
 
 public class Board {
-    private LevelEnum size;
+    private DifficultyEnum size;
     private Cell[][] cells;
 
-    public Board(LevelEnum size) {
+    public Board(DifficultyEnum size) {
         this.size = size;
         this.cells = new Cell[size.getValue()][size.getValue()];
         initCells();

@@ -1,12 +1,12 @@
 package com.shacharnissan.minesweeper.logic;
 
-public enum LevelEnum {
+public enum DifficultyEnum {
     EASY(3),
     MEDIUM(4),
     HARD(5);
 
     private final int value;
-    LevelEnum(int value) {
+    DifficultyEnum(int value) {
         this.value = value;
     }
 
