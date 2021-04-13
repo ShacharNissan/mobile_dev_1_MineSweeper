@@ -12,6 +12,12 @@ public class Board {
         initCells();
     }
 
+    public Cell getCell(int index){
+        int cellJ = index % size.getValue();
+        int cellI = index / size.getValue();
+        return cells[cellI][cellJ];
+    }
+
     private void initCells() {
         cleanBoard();
         initMines();
@@ -128,6 +134,10 @@ public class Board {
                     cells[i][j].setType(TypeEnum.WRONG_FLAG);
             }
         }
+    }
+
+    public int getBoardSize(){
+        return this.size.getValue() * this.size.getValue();
     }
 
 }

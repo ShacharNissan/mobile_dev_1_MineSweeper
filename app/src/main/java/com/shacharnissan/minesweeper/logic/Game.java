@@ -15,6 +15,10 @@ public class Game {
         this.startTime = null;
     }
 
+    public Cell getCell(int index){
+        return this.board.getCell(index);
+    }
+
     public long getTime() {
         return (new Date()).getTime() - this.startTime.getTime();
     }
