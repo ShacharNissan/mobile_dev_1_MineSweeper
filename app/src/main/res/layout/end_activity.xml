@@ -20,7 +20,7 @@
         tools:layout_editor_absoluteY="266dp" />
 
     <TextView
-        android:id="@+id/textView_GameStatus2"
+        android:id="@+id/textView_ResultTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/time"
@@ -68,7 +68,7 @@
         tools:layout_editor_absoluteY="193dp" />
 
     <TextView
-        android:id="@+id/textView_resultTime"
+        android:id="@+id/textView_ResultTimeTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/result_time"
