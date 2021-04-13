@@ -1,3 +1,16 @@
 <resources>
     <string name="app_name">MineSweeper</string>
+
+    <string name="score_title">Highest Score</string>
+    <string name="diff_title">Difficulty:</string>
+    <string name="diff_easy">Easy</string>
+    <string name="diff_medium">Medium</string>
+    <string name="diff_hard">Hard</string>
+
+    <string name="btn_start">Start Game</string>
+    <string name="btn_new">Start New Game</string>
+    <string name="game_over">GAME OVER</string>
+    <string name="game_win">You Won!</string>
+    <string name="game_lose">You Lost</string>
+    <string name="game_time">Time:</string>
 </resources>
