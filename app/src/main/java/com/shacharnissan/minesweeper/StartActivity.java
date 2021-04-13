@@ -27,11 +27,10 @@ public class StartActivity extends AppCompatActivity {
 
         btn_start.setOnClickListener(v -> btnclicked());
 
-
     }
 
     private void btnclicked() {
-        Intent myIntent = new Intent(StartActivity.this, AppCompatActivity.class);
+        Intent myIntent = new Intent(StartActivity.this, MainActivity.class);
         DifficultyEnum diff = DifficultyEnum.EASY;
         switch (radiogroup.getCheckedRadioButtonId()) {
             case R.id.radioButton:

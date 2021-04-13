@@ -12,9 +12,13 @@ public class Game {
 
     public Game(DifficultyEnum difficulty) {
         this.board = new Board(difficulty);
+        this.difficulty = difficulty;
         this.startTime = null;
     }
 
+    public DifficultyEnum getDifficulty(){
+        return this.difficulty;
+    }
     public Cell getCell(int index){
         return this.board.getCell(index);
     }

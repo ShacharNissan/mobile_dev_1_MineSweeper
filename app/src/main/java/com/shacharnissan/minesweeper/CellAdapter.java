@@ -41,6 +41,7 @@ public class CellAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         CellView cell = null;
+
         if(convertView != null)
             cell = (CellView)convertView;
         else
@@ -56,11 +57,32 @@ public class CellAdapter extends BaseAdapter {
 
         cell.setLayoutParams(layoutParams);
 
+        switch (board.getCell(position).getType()){
+            case MINE:
+                cell.imageview.setImageDrawable(context.getDrawable(R.drawable.mine));
+                cell.imageview.setVisibility(View.VISIBLE);
+                cell.textView.setVisibility(View.INVISIBLE);
+                break;
+            case NUMBER:
+                cell.textView.setVisibility(View.VISIBLE);
+                cell.imageview.setVisibility(View.INVISIBLE);
+                cell.textView.setText(""+board.getCell(position).getNearMines());
+                break;
+            case WRONG_FLAG:
+                cell.imageview.setImageDrawable(context.getDrawable(R.drawable.wrong_flag));
+                cell.imageview.setVisibility(View.VISIBLE);
+                cell.textView.setVisibility(View.INVISIBLE);
+                break;
+            case MINE_CLICKED:
+                cell.imageview.setImageDrawable(context.getDrawable(R.drawable.mine_clicked));
+                cell.imageview.setVisibility(View.VISIBLE);
+                cell.textView.setVisibility(View.INVISIBLE);
+                break;
+        }
 
-        ////////////////
-        //cell.textView.setText(board.getTile(position).getStateString());
         return cell;
     }
+
     private void calculateSizes(GridView gridView) {
 
         int hSpacing =  gridView.getHorizontalSpacing();

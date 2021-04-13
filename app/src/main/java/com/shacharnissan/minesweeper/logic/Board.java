@@ -24,13 +24,13 @@ public class Board {
     }
 
     private void initMines() {
-        int Num_of_mines = (int) Math.sqrt(size.getValue());
+        int Num_of_mines = (int)size.getValue();
         Random rand = new Random();
         for (int i = 0; i < Num_of_mines; i++) {
             int cellNum;
             int check = 0, cellI, cellJ;
             do {
-                cellNum = rand.nextInt(size.getValue());
+                cellNum = rand.nextInt(size.getValue()*size.getValue());
                 cellJ = cellNum % size.getValue();
                 cellI = cellNum / size.getValue();
                 check += 1;
@@ -46,15 +46,20 @@ public class Board {
     private void increaseMineNeighbors(int cellI, int cellJ) {
         for (int i = cellI - 1; i <= cellI + 1 && i < size.getValue(); i++) {
             if (i < 0)
-                i = 0;
-            for (int j = cellJ - 1; j < cellJ + 1 & j < size.getValue(); j++) {
+                continue;
+            for (int j = cellJ - 1; j < cellJ + 1 && j < size.getValue(); j++) {
                 if (j < 0)
-                    j = 0;
+                    continue;
                 if (i == cellI && j == cellJ)
                     continue;
-                cells[i][j].setNearMines(cells[i][j].getNearMines() + 1);
+                cells[i][j].increaseMineCounter();
             }
         }
+
+
+
+
+
     }
 
     private void cleanBoard() {

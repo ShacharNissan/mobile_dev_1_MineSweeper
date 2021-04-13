@@ -42,14 +42,14 @@ public class Cell {
     }
 
     public int getNearMines() {
-        if (this.type != TypeEnum.NUMBER)
-            return -1;
         return nearMines;
     }
 
     public void setNearMines(int nearMines) {
-        if (this.type != TypeEnum.NUMBER)
-            return;
         this.nearMines = nearMines;
+    }
+
+    public void increaseMineCounter(){
+        this.nearMines++;
     }
 }
