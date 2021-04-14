@@ -59,8 +59,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
-        // long click - for flag
+        // long click - for put flag
         gridView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long l) {
@@ -77,7 +76,6 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-
     public void startTimer(){
         customHandler.postDelayed(updateTimerThread, 0);
     }
@@ -89,12 +87,10 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
-
     private String calculateTime(int time) {
         return String.format("%02d:%02d", TimeUnit.MILLISECONDS.toMinutes(time), TimeUnit.MILLISECONDS.toSeconds(time) -
                 TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(time)));
     }
-
 
     private String getDifficultyLevel() {
         Intent intent = getIntent();
