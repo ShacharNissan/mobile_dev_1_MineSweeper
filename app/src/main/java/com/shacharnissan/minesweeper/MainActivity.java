@@ -79,12 +79,9 @@ public class MainActivity extends AppCompatActivity {
     public void startTimer(){
         customHandler.postDelayed(updateTimerThread, 0);
     }
-    public void stopTimer(){
-        customHandler.removeCallbacks(updateTimerThread);
-    }
+    public void stopTimer(){ customHandler.removeCallbacks(updateTimerThread); }
 
-
-    // show timer:
+    // define timer:
     private Handler customHandler = new Handler();
     private Runnable updateTimerThread = new Runnable() {
         public void run() {

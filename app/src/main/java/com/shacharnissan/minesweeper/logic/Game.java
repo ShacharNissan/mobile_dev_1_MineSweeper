@@ -1,9 +1,6 @@
 package com.shacharnissan.minesweeper.logic;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Formatter;
 
 public class Game {
     public static long EASY_BEST_TIME = Long.MAX_VALUE;
@@ -23,7 +20,7 @@ public class Game {
         this.isStarted = false;
     }
 
-    private void gameEnd(){
+    private void saveNewRecord(){
         resultTime = (new Date().getTime()) - startTime.getTime();
         switch (difficulty){
             case EASY:
@@ -74,7 +71,8 @@ public class Game {
         }
         if (this.board.clickCell(index))  // true - the game is over ; false - the game is not over
         {
-            gameEnd();
+            if (getBoard().getStatus() == StatusEnum.WIN)
+                saveNewRecord();
             return true;
         }
         return false;
