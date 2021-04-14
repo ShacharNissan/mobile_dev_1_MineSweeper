@@ -25,8 +25,8 @@ public class Board {
     }
 
     private void initMines() {
-        int Num_of_mines = 1;  // only for checking
-//        int Num_of_mines = (int)size.getValue() - 1;
+//        int Num_of_mines = 1;  // only for test
+        int Num_of_mines = (int)size.getValue()-2;
         Random rand = new Random();
         for (int i = 0; i < Num_of_mines; i++) {
             int cellNum;

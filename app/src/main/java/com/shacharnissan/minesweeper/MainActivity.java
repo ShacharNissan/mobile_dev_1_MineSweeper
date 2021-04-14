@@ -79,6 +79,12 @@ public class MainActivity extends AppCompatActivity {
     public void startTimer(){
         customHandler.postDelayed(updateTimerThread, 0);
     }
+    public void stopTimer(){
+        customHandler.removeCallbacks(updateTimerThread);
+    }
+
+
+    // show timer:
     private Handler customHandler = new Handler();
     private Runnable updateTimerThread = new Runnable() {
         public void run() {
@@ -86,6 +92,7 @@ public class MainActivity extends AppCompatActivity {
             customHandler.postDelayed(this, 0);
         }
     };
+
 
     private String writeTimeClockFormat(int time) {
         return String.format("%02d:%02d", TimeUnit.MILLISECONDS.toMinutes(time), TimeUnit.MILLISECONDS.toSeconds(time) -
@@ -129,7 +136,6 @@ public class MainActivity extends AppCompatActivity {
                 editor.putLong(getString(R.string.hard_score_tag), Game.HARD_BEST_TIME);
                 break;
         }
-
         editor.apply();
     }
 
@@ -141,4 +147,9 @@ public class MainActivity extends AppCompatActivity {
         ((CellAdapter) gridView.getAdapter()).notifyDataSetChanged();
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        stopTimer();
+    }
 }
