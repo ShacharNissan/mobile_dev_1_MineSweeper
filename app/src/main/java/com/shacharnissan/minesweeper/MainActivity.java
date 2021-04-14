@@ -99,7 +99,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void finishedGame() {
-        saveResult();
+        if (game.getBoard().getStatus() == StatusEnum.WIN)
+            saveResult();
         sendResultParametersToEndActivity();
     }
 
