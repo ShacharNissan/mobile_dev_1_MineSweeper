@@ -6,9 +6,10 @@ import java.util.Date;
 import java.util.Formatter;
 
 public class Game {
-    public static long EASY_BEST_TIME = 0;
-    public static long MEDIUM_BEST_TIME = 0;
-    public static long HARD_BEST_TIME = 0;
+    public static long EASY_BEST_TIME = Long.MAX_VALUE;
+    public static long MEDIUM_BEST_TIME = Long.MAX_VALUE;
+    public static long HARD_BEST_TIME = Long.MAX_VALUE;
+
     private Board board;
     private Date startTime;
     private long resultTime;
@@ -26,16 +27,16 @@ public class Game {
         resultTime = (new Date().getTime()) - startTime.getTime();
         switch (difficulty){
             case EASY:
-                if (EASY_BEST_TIME < resultTime) {
+                if (EASY_BEST_TIME > resultTime) {
                     EASY_BEST_TIME = resultTime;
                 }
                 break;
             case MEDIUM:
-                if (MEDIUM_BEST_TIME < resultTime)
+                if (MEDIUM_BEST_TIME > resultTime)
                     MEDIUM_BEST_TIME = resultTime;
                 break;
             case HARD:
-                if (HARD_BEST_TIME < resultTime)
+                if (HARD_BEST_TIME > resultTime)
                     HARD_BEST_TIME = resultTime;
                 break;
         }
