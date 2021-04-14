@@ -23,8 +23,8 @@ public class EndActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.end_activity);
 
-        resultStatus = findViewById(R.id.textView_ResultStatus);
-        resultTime = findViewById(R.id.textView_ResultTime);
+        resultStatus = findViewById(R.id.status_text);
+        resultTime = findViewById(R.id.timeresult_text);
         btn_start_new_game = (Button) findViewById(R.id.start_btn);
         btn_start_new_game.setOnClickListener(v -> btnclicked());
 
