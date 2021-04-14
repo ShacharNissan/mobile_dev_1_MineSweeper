@@ -18,7 +18,6 @@ import com.shacharnissan.minesweeper.logic.DifficultyEnum;
 import com.shacharnissan.minesweeper.logic.Game;
 import com.shacharnissan.minesweeper.logic.StatusEnum;
 
-import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity {
