@@ -12,6 +12,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.shacharnissan.minesweeper.logic.DifficultyEnum;
 
+import java.util.concurrent.TimeUnit;
+
 public class StartActivity extends AppCompatActivity {
     private Button btn_start;
     private RadioGroup radiogroup;
@@ -40,9 +42,11 @@ public class StartActivity extends AppCompatActivity {
         int easyScore = sharedPref.getInt(getString(R.string.easy_score_tag), defaultValue);
         int medScore = sharedPref.getInt(getString(R.string.med_score_tag), defaultValue);
         int hardScore = sharedPref.getInt(getString(R.string.hard_score_tag), defaultValue);
-        easy_score_text.setText(""+easyScore);
-        med_score_text.setText(""+medScore);
-        hard_score_text.setText(""+hardScore);
+
+        // put start value timers:
+        easy_score_text.setText(R.string.time);
+        med_score_text.setText(R.string.time);
+        hard_score_text.setText(R.string.time);
     }
 
     private void btnclicked() {
@@ -74,4 +78,30 @@ public class StartActivity extends AppCompatActivity {
         }
         return diff;
     }
+
+//    @Override
+//    protected void onResume() {
+//        super.onResume();
+//        getHighestResults();
+//    }
+//
+//    private void getHighestResults() {
+//        SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
+//        int easyValue = getResources().getInteger((int)R.string.easy_score_tag);
+//        int easyHighestResult = sharedPref.getInt(getString(R.string.easy_score_tag), easyValue);
+//        int medValue = getResources().getInteger((int)R.string.easy_score_tag);
+//        int medHighestResult = sharedPref.getInt(getString(R.string.easy_score_tag), medValue);
+//        int hardValue = getResources().getInteger((int)R.string.easy_score_tag);
+//        int hardHighestResult = sharedPref.getInt(getString(R.string.easy_score_tag), hardValue);
+//
+//        // put values timers:
+//        easy_score_text.setText(writeTimeClockFormat(easyHighestResult));
+//        med_score_text.setText(writeTimeClockFormat(medHighestResult));
+//        hard_score_text.setText(writeTimeClockFormat(hardHighestResult));
+//    }
+//
+//    private String writeTimeClockFormat(int time) {
+//        return String.format("%02d:%02d", TimeUnit.MILLISECONDS.toMinutes(time), TimeUnit.MILLISECONDS.toSeconds(time) -
+//                TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(time)));
+//    }
 }

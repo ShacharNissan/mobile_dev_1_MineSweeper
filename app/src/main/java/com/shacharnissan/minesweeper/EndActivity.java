@@ -25,7 +25,7 @@ public class EndActivity extends AppCompatActivity {
 
         resultStatus = findViewById(R.id.textView_ResultStatus);
         resultTime = findViewById(R.id.textView_ResultTime);
-        btn_start_new_game = (Button)findViewById(R.id.start_btn);
+        btn_start_new_game = (Button) findViewById(R.id.start_btn);
         btn_start_new_game.setOnClickListener(v -> btnclicked());
 
         showGameResult();
@@ -38,12 +38,12 @@ public class EndActivity extends AppCompatActivity {
         status = intent.getStringExtra(String.format("%d", R.string.status_tag));
         time = intent.getStringExtra(String.format("%d", R.string.time_tag));
         this.resultStatus.setText(checkStatus(status));
-        this.resultTime.setText(calculateTime(Integer.parseInt(time)));
+        this.resultTime.setText(writeTimeClockFormat(Integer.parseInt(time)));
     }
 
-    private String calculateTime(int time) {
+    private String writeTimeClockFormat(int time) {
         return String.format("%02d:%02d", TimeUnit.MILLISECONDS.toMinutes(time), TimeUnit.MILLISECONDS.toSeconds(time) -
-                        TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(time)));
+                TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(time)));
     }
 
     private int checkStatus(String status) {
@@ -73,4 +73,5 @@ public class EndActivity extends AppCompatActivity {
         String value = intent.getStringExtra(key); //if it's a string you stored.
         return value;
     }
+
 }

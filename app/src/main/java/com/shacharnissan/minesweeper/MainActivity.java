@@ -82,12 +82,12 @@ public class MainActivity extends AppCompatActivity {
     private Handler customHandler = new Handler();
     private Runnable updateTimerThread = new Runnable() {
         public void run() {
-            timerText.setText(calculateTime((int)game.getTime()));
+            timerText.setText(writeTimeClockFormat((int)game.getTime()));
             customHandler.postDelayed(this, 0);
         }
     };
 
-    private String calculateTime(int time) {
+    private String writeTimeClockFormat(int time) {
         return String.format("%02d:%02d", TimeUnit.MILLISECONDS.toMinutes(time), TimeUnit.MILLISECONDS.toSeconds(time) -
                 TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(time)));
     }
@@ -98,7 +98,6 @@ public class MainActivity extends AppCompatActivity {
         String value = intent.getStringExtra(key); //if it's a string you stored.
         return value;
     }
-
 
     private void finishedGame() {
         saveResult();
