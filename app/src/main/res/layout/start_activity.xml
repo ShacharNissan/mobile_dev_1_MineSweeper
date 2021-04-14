@@ -78,6 +78,7 @@
             android:textColor="@color/black"
             android:textSize="20dp"
             android:textStyle="italic"
+            android:checked="true"
             android:text="@string/diff_easy" />
 
         <RadioButton

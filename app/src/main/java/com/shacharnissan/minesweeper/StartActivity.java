@@ -4,9 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
-import android.widget.GridView;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
@@ -34,7 +32,6 @@ public class StartActivity extends AppCompatActivity {
 
         loadHighScore();
         btn_start.setOnClickListener(v -> btnclicked());
-
     }
 
     private void loadHighScore() {
@@ -49,8 +46,21 @@ public class StartActivity extends AppCompatActivity {
     }
 
     private void btnclicked() {
+        DifficultyEnum diff = getDifficultyLevelFromUser();
+        sendDifficultyLevelToNextActivity(diff);
+    }
+
+    private void sendDifficultyLevelToNextActivity(DifficultyEnum diff) {
+        String key, value;
+        key = String.format("%d", R.string.diff_tag);
+        value = String.format("%s", diff);
         Intent myIntent = new Intent(StartActivity.this, MainActivity.class);
-        DifficultyEnum diff = DifficultyEnum.EASY;
+        myIntent.putExtra(key,value); //Optional parameters
+        StartActivity.this.startActivity(myIntent);
+    }
+
+    private DifficultyEnum getDifficultyLevelFromUser() {
+        DifficultyEnum diff = DifficultyEnum.EASY;   // the default value
         switch (radiogroup.getCheckedRadioButtonId()) {
             case R.id.radioButton:
                 diff = DifficultyEnum.EASY;
@@ -61,10 +71,7 @@ public class StartActivity extends AppCompatActivity {
             case R.id.radioButton3:
                 diff = DifficultyEnum.HARD;
                 break;
-
         }
-        myIntent.putExtra(String.format("%d", R.string.diff_tag), String.format("%s", diff)); //Optional parameters
-        StartActivity.this.startActivity(myIntent);
-
+        return diff;
     }
 }

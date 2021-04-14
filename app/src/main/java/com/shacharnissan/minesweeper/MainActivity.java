@@ -11,7 +11,6 @@ import android.widget.GridView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.shacharnissan.minesweeper.logic.Board;
 import com.shacharnissan.minesweeper.logic.DifficultyEnum;
 import com.shacharnissan.minesweeper.logic.Game;
 import com.shacharnissan.minesweeper.logic.StatusEnum;
@@ -26,7 +25,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
 
-        game = new Game(DifficultyEnum.HARD);
+        String DifficulyLevel = getDifficultyLevel();
+        game = new Game(DifficultyEnum.valueOf(DifficulyLevel));
 
         gridView = findViewById(R.id.grid_view);
         gridView.setNumColumns(game.getDifficulty().getValue());
@@ -47,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+
         // long click - for flag
         gridView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
@@ -58,22 +59,35 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
         });
+    }
 
+    private String getDifficultyLevel() {
+        Intent intent = getIntent();
+        String key = String.format("%d", R.string.diff_tag);
+        String value = intent.getStringExtra(key); //if it's a string you stored.
+        return value;
     }
 
     private void finishedGame() {
+        saveResult();
+        sendResultParametersToEndActivity();
+    }
+
+    private void sendResultParametersToEndActivity() {
+        Intent myIntent = new Intent(MainActivity.this, EndActivity.class);
+        myIntent.putExtra(""+String.format("%d", R.string.status_tag), ""+game.getBoard().getStatus());
+        myIntent.putExtra(""+String.format("%d", R.string.time_tag), ""+game.getResultTime());
+        myIntent.putExtra(""+String.format("%d", R.string.diff_tag) , ""+game.getDifficulty());
+        MainActivity.this.startActivity(myIntent);
+    }
+
+    private void saveResult() {
         SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putLong(getString(R.string.easy_score_tag), this.game.EASY_BEST_TIME);
         editor.putLong(getString(R.string.med_score_tag), this.game.MEDIUM_BEST_TIME);
         editor.putLong(getString(R.string.hard_score_tag), this.game.HARD_BEST_TIME);
         editor.apply();
-
-        Intent myIntent = new Intent(MainActivity.this, EndActivity.class);
-        myIntent.putExtra(String.format("%d", R.string.status_tag), game.getBoard().getStatus());
-        myIntent.putExtra(String.format("%d", R.string.time_tag), game.getResultTime());
-        MainActivity.this.startActivity(myIntent);
-
     }
 
     private void refreshView() {

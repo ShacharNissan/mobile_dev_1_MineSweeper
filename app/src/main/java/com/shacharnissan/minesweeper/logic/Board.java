@@ -25,8 +25,8 @@ public class Board {
     }
 
     private void initMines() {
-        int Num_of_mines = 1;
-        //int Num_of_mines = (int)size.getValue();
+//        int Num_of_mines = 2;  // only for checking
+        int Num_of_mines = (int)size.getValue() - 1;
         Random rand = new Random();
         for (int i = 0; i < Num_of_mines; i++) {
             int cellNum;
@@ -73,10 +73,9 @@ public class Board {
         if (cells[cellI][cellJ].isClicked())
             return false;
 
-        if (cells[cellI][cellJ].isFlaged())
-            return false;
-
         cells[cellI][cellJ].setClicked(true);
+        cells[cellI][cellJ].setFlaged(false);
+
         if (cells[cellI][cellJ].getType() == TypeEnum.MINE) {
             cells[cellI][cellJ].setType(TypeEnum.MINE_CLICKED);
             openLose();
@@ -86,10 +85,12 @@ public class Board {
         else {
             openNearEmptyCells(cellI, cellJ);
         }
+
         if(!checkBoard()) {
             status = StatusEnum.CONTINUE;
             return false;
         }
+
         return true;
     }
 

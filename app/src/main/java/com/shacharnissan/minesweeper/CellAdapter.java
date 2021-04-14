@@ -40,12 +40,12 @@ public class CellAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        CellView cell = null;
+        CellView cellView = null;
 
         if(convertView != null)
-            cell = (CellView)convertView;
+            cellView = (CellView)convertView;
         else
-            cell = new CellView(context);
+            cellView = new CellView(context);
 
         GridView gridView = (GridView)parent;
 
@@ -54,46 +54,43 @@ public class CellAdapter extends BaseAdapter {
         }
 
         ViewGroup.LayoutParams layoutParams = new GridView.LayoutParams(cachedWidth,cachedHeight);
-
-        cell.setLayoutParams(layoutParams);
+        cellView.setLayoutParams(layoutParams);
 
         if(board.getCell(position).isClicked()) {
             switch (board.getCell(position).getType()) {
                 case MINE:
-                    cell.imageview.setImageDrawable(context.getDrawable(R.drawable.mine));
-                    cell.textView.setVisibility(View.GONE);
-                    cell.imageview.setVisibility(View.VISIBLE);
-
+                    cellView.imageview.setImageDrawable(context.getDrawable(R.drawable.mine));
+                    cellView.textView.setVisibility(View.GONE);
+                    cellView.imageview.setVisibility(View.VISIBLE);
                     break;
                 case NUMBER:
-                    cell.textView.setVisibility(View.VISIBLE);
-                    cell.imageview.setVisibility(View.GONE);
-                    cell.textView.setText("" + board.getCell(position).getNearMines());
+                    cellView.textView.setVisibility(View.VISIBLE);
+                    cellView.imageview.setVisibility(View.GONE);
+                    cellView.textView.setText("" + board.getCell(position).getNearMines());
                     break;
                 case WRONG_FLAG:
-                    cell.imageview.setImageDrawable(context.getDrawable(R.drawable.wrong_flag));
-                    cell.imageview.setVisibility(View.VISIBLE);
-                    cell.textView.setVisibility(View.INVISIBLE);
+                    cellView.imageview.setImageDrawable(context.getDrawable(R.drawable.wrong_flag));
+                    cellView.imageview.setVisibility(View.VISIBLE);
+                    cellView.textView.setVisibility(View.GONE);
                     break;
                 case MINE_CLICKED:
-                    cell.imageview.setImageDrawable(context.getDrawable(R.drawable.mine_clicked));
-                    cell.imageview.setVisibility(View.VISIBLE);
-                    cell.textView.setVisibility(View.INVISIBLE);
+                    cellView.imageview.setImageDrawable(context.getDrawable(R.drawable.mine_clicked));
+                    cellView.imageview.setVisibility(View.VISIBLE);
+                    cellView.textView.setVisibility(View.GONE);
                     break;
             }
         }
 
         if(board.getCell(position).isFlaged()){
-            cell.imageview.setImageDrawable(context.getDrawable(R.drawable.flag));
-            cell.textView.setVisibility(View.GONE);
-            cell.imageview.setVisibility(View.VISIBLE);
+            cellView.imageview.setImageDrawable(context.getDrawable(R.drawable.flag));
+            cellView.textView.setVisibility(View.GONE);
+            cellView.imageview.setVisibility(View.VISIBLE);
         }
 
-        return cell;
+        return cellView;
     }
 
     private void calculateSizes(GridView gridView) {
-
         int hSpacing =  gridView.getHorizontalSpacing();
         int vSpacing =  gridView.getVerticalSpacing();
 
@@ -104,9 +101,6 @@ public class CellAdapter extends BaseAdapter {
         int vPaddingSize = vSpacing * (rows - 1);
 
         cachedWidth = (gridView.getWidth() - hPaddingSize) / columns;
-
-
         cachedHeight = (gridView.getHeight() - vPaddingSize) / rows;
-
     }
 }

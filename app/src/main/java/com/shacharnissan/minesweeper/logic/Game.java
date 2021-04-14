@@ -19,6 +19,7 @@ public class Game {
         this.difficulty = difficulty;
         this.startTime = null;
     }
+
     private void gameEnd(){
         resultTime = (new Date().getTime()) - startTime.getTime();
         switch (difficulty){
@@ -37,6 +38,7 @@ public class Game {
                 break;
         }
     }
+
     public long getResultTime(){
         return resultTime;
     }
@@ -44,17 +46,13 @@ public class Game {
     public DifficultyEnum getDifficulty(){
         return this.difficulty;
     }
+
     public Cell getCell(int index){
         return this.board.getCell(index);
     }
 
     public long getTime() {
         return (new Date()).getTime() - this.startTime.getTime();
-    }
-
-    public int[] getTimeInMinutes() {
-        return null;
-        //return new int[]{this.timer / 60 , this.timer % 60 };
     }
 
     public StatusEnum getGameStatus() {
@@ -68,10 +66,10 @@ public class Game {
 
     public boolean clickCell(int index) {
         if (startTime == null) {
-            //      DateFormat dateFormat = new SimpleDateFormat("mm:ss");
             this.startTime = new Date();
         }
-        if (this.board.clickCell(index)) {
+        if (this.board.clickCell(index))  // true - the game is over ; false - the game is not over
+        {
             gameEnd();
             return true;
         }
