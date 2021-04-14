@@ -112,7 +112,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void saveResult() {
-        SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
+        String filename = getResources().getString(R.string.score_filename);
+        SharedPreferences sharedPref = getSharedPreferences(filename,Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putLong(getString(R.string.easy_score_tag), this.game.EASY_BEST_TIME);
         editor.putLong(getString(R.string.med_score_tag), this.game.MEDIUM_BEST_TIME);

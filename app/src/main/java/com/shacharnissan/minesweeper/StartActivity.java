@@ -32,21 +32,7 @@ public class StartActivity extends AppCompatActivity {
         btn_start = findViewById(R.id.start_btn);
         radiogroup = findViewById(R.id.radioGroup);
 
-        loadHighScore();
         btn_start.setOnClickListener(v -> btnclicked());
-    }
-
-    private void loadHighScore() {
-        SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
-        int defaultValue = 0;
-        int easyScore = sharedPref.getInt(getString(R.string.easy_score_tag), defaultValue);
-        int medScore = sharedPref.getInt(getString(R.string.med_score_tag), defaultValue);
-        int hardScore = sharedPref.getInt(getString(R.string.hard_score_tag), defaultValue);
-
-        // put start value timers:
-        easy_score_text.setText(R.string.time);
-        med_score_text.setText(R.string.time);
-        hard_score_text.setText(R.string.time);
     }
 
     private void btnclicked() {
@@ -86,12 +72,10 @@ public class StartActivity extends AppCompatActivity {
     }
 
     private void getHighestResults() {
-        SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
-        //int easyValue = getResources().getInteger((int)R.string.easy_score_tag);
+        String filename = getResources().getString(R.string.score_filename);
+        SharedPreferences sharedPref = getSharedPreferences(filename,Context.MODE_PRIVATE);
         long easyHighestResult = sharedPref.getLong(getString(R.string.easy_score_tag), 0);
-        //int medValue = getResources().getInteger((int)R.string.easy_score_tag);
         long medHighestResult = sharedPref.getLong(getString(R.string.med_score_tag), 0);
-        //int hardValue = getResources().getInteger((int)R.string.easy_score_tag);
         long hardHighestResult = sharedPref.getLong(getString(R.string.hard_score_tag), 0);
 
         // put values timers:
