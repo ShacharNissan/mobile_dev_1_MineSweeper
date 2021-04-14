@@ -28,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
 
@@ -116,9 +117,19 @@ public class MainActivity extends AppCompatActivity {
         String filename = getResources().getString(R.string.score_filename);
         SharedPreferences sharedPref = getSharedPreferences(filename,Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putLong(getString(R.string.easy_score_tag), this.game.EASY_BEST_TIME);
-        editor.putLong(getString(R.string.med_score_tag), this.game.MEDIUM_BEST_TIME);
-        editor.putLong(getString(R.string.hard_score_tag), this.game.HARD_BEST_TIME);
+
+        switch (this.game.getDifficulty()){
+            case EASY:
+                editor.putLong(getString(R.string.easy_score_tag), Game.EASY_BEST_TIME);
+                break;
+            case MEDIUM:
+                editor.putLong(getString(R.string.med_score_tag), Game.MEDIUM_BEST_TIME);
+                break;
+            case HARD:
+                editor.putLong(getString(R.string.hard_score_tag), Game.HARD_BEST_TIME);
+                break;
+        }
+
         editor.apply();
     }
 

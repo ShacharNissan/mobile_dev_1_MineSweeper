@@ -77,6 +77,8 @@ public class StartActivity extends AppCompatActivity {
         long easyHighestResult = sharedPref.getLong(getString(R.string.easy_score_tag), 0);
         long medHighestResult = sharedPref.getLong(getString(R.string.med_score_tag), 0);
         long hardHighestResult = sharedPref.getLong(getString(R.string.hard_score_tag), 0);
+//      
+//        sharedPref.edit().clear().commit();
 
         // put values timers:
         easy_score_text.setText(writeTimeClockFormat(easyHighestResult));
