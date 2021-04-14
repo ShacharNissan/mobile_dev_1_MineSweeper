@@ -5,9 +5,12 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.SystemClock;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -15,10 +18,14 @@ import com.shacharnissan.minesweeper.logic.DifficultyEnum;
 import com.shacharnissan.minesweeper.logic.Game;
 import com.shacharnissan.minesweeper.logic.StatusEnum;
 
+import java.util.Date;
+import java.util.concurrent.TimeUnit;
+
 public class MainActivity extends AppCompatActivity {
 
     GridView gridView;
     Game game;
+    TextView timerText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,10 +40,15 @@ public class MainActivity extends AppCompatActivity {
         gridView.setBackgroundColor(Color.BLACK);
         gridView.setAdapter(new CellAdapter(game.getBoard(), getApplicationContext()));
 
+        timerText = findViewById(R.id.timerText);
+
         // short click
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if (!game.getIsStarted()){
+                    startTimer();
+                }
                 if(!game.getBoard().getCell(position).isClicked()) {
                     game.clickCell(position);
                     if(game.getBoard().getStatus() != StatusEnum.CONTINUE) {
@@ -52,6 +64,9 @@ public class MainActivity extends AppCompatActivity {
         gridView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long l) {
+                if (!game.getIsStarted()){
+                    startTimer();
+                }
                 if(!game.getBoard().getCell(position).isClicked()) {
                     game.getBoard().getCell(position).setFlaged(true);
                     refreshView();
@@ -59,7 +74,27 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
         });
+
     }
+
+
+    public void startTimer(){
+        customHandler.postDelayed(updateTimerThread, 0);
+    }
+    private Handler customHandler = new Handler();
+    private Runnable updateTimerThread = new Runnable() {
+        public void run() {
+            timerText.setText(calculateTime((int)game.getTime()));
+            customHandler.postDelayed(this, 0);
+        }
+    };
+
+
+    private String calculateTime(int time) {
+        return String.format("%02d:%02d", TimeUnit.MILLISECONDS.toMinutes(time), TimeUnit.MILLISECONDS.toSeconds(time) -
+                TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(time)));
+    }
+
 
     private String getDifficultyLevel() {
         Intent intent = getIntent();
@@ -67,6 +102,7 @@ public class MainActivity extends AppCompatActivity {
         String value = intent.getStringExtra(key); //if it's a string you stored.
         return value;
     }
+
 
     private void finishedGame() {
         saveResult();

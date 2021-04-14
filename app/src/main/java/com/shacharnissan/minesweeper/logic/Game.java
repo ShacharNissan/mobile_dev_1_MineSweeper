@@ -13,11 +13,13 @@ public class Game {
     private Date startTime;
     private long resultTime;
     private DifficultyEnum difficulty;
+    private boolean isStarted;
 
     public Game(DifficultyEnum difficulty) {
         this.board = new Board(difficulty);
         this.difficulty = difficulty;
         this.startTime = null;
+        this.isStarted = false;
     }
 
     private void gameEnd(){
@@ -67,6 +69,7 @@ public class Game {
     public boolean clickCell(int index) {
         if (startTime == null) {
             this.startTime = new Date();
+            this.isStarted = true;
         }
         if (this.board.clickCell(index))  // true - the game is over ; false - the game is not over
         {
@@ -79,4 +82,10 @@ public class Game {
     public Board getBoard() {
         return board;
     }
+
+    public boolean getIsStarted()
+    {
+        return isStarted;
+    }
+
 }
