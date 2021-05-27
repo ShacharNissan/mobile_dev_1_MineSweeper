@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -11,15 +13,21 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.shacharnissan.minesweeper.logic.DifficultyEnum;
+import com.shacharnissan.minesweeper.logic.Score;
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class StartActivity extends AppCompatActivity {
     private Button btn_start;
+    private Button btn_highest_score;
+
     private RadioGroup radiogroup;
     private TextView easy_score_text;
     private TextView med_score_text;
     private TextView hard_score_text;
+
+    private HighScoresFragment highScoresFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,11 +39,36 @@ public class StartActivity extends AppCompatActivity {
         hard_score_text = findViewById(R.id.hard_score_text);
         btn_start = findViewById(R.id.start_btn);
         radiogroup = findViewById(R.id.radioGroup);
+        btn_start.setOnClickListener(v -> startBtnClicked());
+        btn_highest_score = findViewById(R.id.highest_score_btn);
+        btn_highest_score.setOnClickListener(v -> openHighestScoreFragment());
 
-        btn_start.setOnClickListener(v -> btnclicked());
+        this.highScoresFragment = new HighScoresFragment();
     }
 
-    private void btnclicked() {
+    private void openHighestScoreFragment() {
+        Log.d("fragment btn", "open fragment highest scores");
+        getSupportFragmentManager().beginTransaction().replace(R.id.start_activity,highScoresFragment).commit();
+        btn_start.setVisibility(View.INVISIBLE);
+        btn_highest_score.setVisibility(View.INVISIBLE);
+    }
+
+    private void saveScoresToFragment() {
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (highScoresFragment == null || highScoresFragment.isRemoving())
+            super.onBackPressed();
+        else{
+            getSupportFragmentManager().beginTransaction().remove(highScoresFragment).commit();
+            btn_start.setVisibility(View.VISIBLE);
+            btn_highest_score.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private void startBtnClicked() {
         DifficultyEnum diff = getDifficultyLevelFromUser();
         sendDifficultyLevelToNextActivity(diff);
     }
@@ -68,7 +101,14 @@ public class StartActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        Log.d("onResume", "onResume");
         getHighestResults();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.d("onPause", "onPause");
     }
 
     private void getHighestResults() {

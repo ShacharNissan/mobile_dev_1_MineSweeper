@@ -7,6 +7,10 @@
     <string name="diff_medium">Medium</string>
     <string name="diff_hard">Hard</string>
 
+    <string name="easyTag">EASY</string>
+    <string name="mediumTag">MEDIUM</string>
+    <string name="hardTag">HARD</string>
+
     <string name="btn_start">Start Game</string>
     <string name="btn_new">Start New Game</string>
     <string name="game_over">GAME OVER</string>
@@ -24,4 +28,9 @@
     <string name="easy_score_tag">easyHS</string>
     <string name="med_score_tag">medHS</string>
     <string name="hard_score_tag">hardHS</string>
+
+    <string name="btn_back">Back</string>
+    <string name="highest_scores_title">Highest Scores</string>
+    <string name="place_title">place</string>
+
 </resources>
