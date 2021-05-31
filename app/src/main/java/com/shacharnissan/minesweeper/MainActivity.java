@@ -6,7 +6,6 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.SystemClock;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
@@ -14,20 +13,29 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.shacharnissan.minesweeper.logic.DifficultyEnum;
 import com.shacharnissan.minesweeper.logic.Game;
+import com.shacharnissan.minesweeper.logic.Score;
 import com.shacharnissan.minesweeper.logic.StatusEnum;
+import com.shacharnissan.minesweeper.logic.Utils;
 
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity {
 
     GridView gridView;
-    Game game;
+    private Game game;
     TextView timerText;
+    private List<Score> scores;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        System.out.println("main activity - onCreate");
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
@@ -41,6 +49,8 @@ public class MainActivity extends AppCompatActivity {
         gridView.setAdapter(new CellAdapter(game.getBoard(), getApplicationContext()));
 
         timerText = findViewById(R.id.timerText);
+
+        loadScoresJsonFileToGameResultsLists();
 
         // short click
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -74,6 +84,30 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void loadScoresJsonFileToGameResultsLists() {
+        String filename = getResources().getString(R.string.Scores_Json_File);
+        SharedPreferences sharedPref = getSharedPreferences(filename,Context.MODE_PRIVATE);
+
+        // for reset all highest results:
+        // sharedPref.edit().clear().commit();
+
+        String jsonFileString = sharedPref.getString(getString(R.string.Scores_Json_String),
+                Utils.getJsonFromAssets(getApplicationContext(), "template_scores_json.json"));
+        Gson gson = new Gson();
+        Type listScoreType = new TypeToken<ArrayList<Score>>() {}.getType();
+        scores = gson.fromJson(jsonFileString, listScoreType);
+        convertScoresListToGameResultsLists();
+    }
+
+    private void convertScoresListToGameResultsLists() {
+        int i;
+        for (i = 0; i < Game.NUM_OF_RESULTS; i++) {
+            game.best10resultsEasy.set(i, scores.get(i).convertStringTimeToLongMillisecondTime());
+            game.best10resultsMedium.set(i, scores.get(i+10).convertStringTimeToLongMillisecondTime());
+            game.best10resultsHard.set(i, scores.get(i+20).convertStringTimeToLongMillisecondTime());
+        }
     }
 
     public void startTimer(){
@@ -114,6 +148,7 @@ public class MainActivity extends AppCompatActivity {
         myIntent.putExtra(""+String.format("%d", R.string.status_tag), ""+game.getBoard().getStatus());
         myIntent.putExtra(""+String.format("%d", R.string.time_tag), ""+game.getResultTime());
         myIntent.putExtra(""+String.format("%d", R.string.diff_tag) , ""+game.getDifficulty());
+        // myIntent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
         MainActivity.this.startActivity(myIntent);
     }
 
@@ -134,6 +169,51 @@ public class MainActivity extends AppCompatActivity {
                 break;
         }
         editor.apply();
+
+        convertGameResultsListsToScoresList();
+        saveHighestScoresListsToJsonFile();
+    }
+
+    private void convertGameResultsListsToScoresList() {
+        Score s;
+
+        for (int i = 0; i < Game.NUM_OF_RESULTS; i++) {
+            s = new Score("" + (i+1),
+                    "" + writeTimeClockFormat(game.best10resultsEasy.get(i)),
+                    DifficultyEnum.EASY );
+            if (game.best10resultsEasy.get(i) == Long.MAX_VALUE)
+                s.setTimeScore("00:00");
+            scores.set(i, s);
+        }
+        for (int i = 0; i < Game.NUM_OF_RESULTS; i++) {
+            s = new Score("" + (i+1),
+                    "" + writeTimeClockFormat(game.best10resultsMedium.get(i)),
+                    DifficultyEnum.MEDIUM );
+            if (game.best10resultsMedium.get(i) == Long.MAX_VALUE)
+                s.setTimeScore("00:00");
+            scores.set(i+10 , s);
+        }
+        for (int i = 0; i < Game.NUM_OF_RESULTS; i++) {
+            s = new Score("" + (i+1),
+                    "" + writeTimeClockFormat(game.best10resultsHard.get(i)),
+                    DifficultyEnum.HARD );
+            if (game.best10resultsHard.get(i) == Long.MAX_VALUE)
+                s.setTimeScore("00:00");
+            scores.set(i+20, s);
+        }
+    }
+
+    private void saveHighestScoresListsToJsonFile() {
+        String filename = getResources().getString(R.string.Scores_Json_File);
+        SharedPreferences sharedPref = getSharedPreferences(filename,Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+
+        Gson gson = new Gson();
+        Type listScoreType = new TypeToken<List<Score>>() {}.getType();
+        String scoresListJson = gson.toJson(scores, listScoreType);
+
+        editor.putString(getString(R.string.Scores_Json_String), scoresListJson);
+        editor.apply();
     }
 
     private void refreshView() {
@@ -145,8 +225,27 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onResume() {
+        System.out.println("main activity - onResume");
+        super.onResume();
+    }
+
+    @Override
     protected void onPause() {
+        System.out.println("main activity - onPause");
         super.onPause();
         stopTimer();
+    }
+
+    private String writeTimeClockFormat(long time) {
+        String newTime = String.format("%02d:%02d", TimeUnit.MILLISECONDS.toMinutes(time), TimeUnit.MILLISECONDS.toSeconds(time) -
+                TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(time)));
+        return newTime;
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        System.out.println("main activity - onStop");
     }
 }

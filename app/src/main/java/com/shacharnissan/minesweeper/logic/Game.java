@@ -1,11 +1,20 @@
 package com.shacharnissan.minesweeper.logic;
 
+import java.util.ArrayList;
 import java.util.Date;
+
 
 public class Game {
     public static long EASY_BEST_TIME = Long.MAX_VALUE;
     public static long MEDIUM_BEST_TIME = Long.MAX_VALUE;
     public static long HARD_BEST_TIME = Long.MAX_VALUE;
+
+    // these lists are save the result in millisecond:
+    public static ArrayList<Long> best10resultsEasy = new ArrayList<>();
+    public static ArrayList<Long> best10resultsMedium = new ArrayList<>();
+    public static ArrayList<Long> best10resultsHard = new ArrayList<>();
+
+    public final static int NUM_OF_RESULTS = 10;
 
     private Board board;
     private Date startTime;
@@ -18,6 +27,16 @@ public class Game {
         this.difficulty = difficulty;
         this.startTime = null;
         this.isStarted = false;
+        initScoresLists();
+    }
+
+    private void initScoresLists() {
+        int i;
+        for (i = 0; i<NUM_OF_RESULTS; i++) {
+            best10resultsEasy.add(Long.MAX_VALUE);
+            best10resultsMedium.add(Long.MAX_VALUE);
+            best10resultsHard.add(Long.MAX_VALUE);
+        }
     }
 
     private void saveNewRecord(){
@@ -35,6 +54,43 @@ public class Game {
             case HARD:
                 if (HARD_BEST_TIME > resultTime)
                     HARD_BEST_TIME = resultTime;
+                break;
+        }
+        checkIfIn10BestScoresAndSave(resultTime, difficulty);
+    }
+
+    void checkIfIn10BestScoresAndSave(long resultTime, DifficultyEnum difficulty){
+        int i;
+        switch (difficulty){
+            case EASY:
+                for (i=0;i<NUM_OF_RESULTS;i++){
+                    if (resultTime < best10resultsEasy.get(i)) {
+                        best10resultsEasy.add(i, resultTime);
+                        best10resultsEasy.remove(10);  // drop last result
+                        break;  // stop to search in the scores list
+                    }
+                    // else -> the for loop keeps search if the new result is in the best 10.
+                }
+                break;
+            case MEDIUM:
+                for (i=0;i<NUM_OF_RESULTS;i++){
+                    if (resultTime < best10resultsMedium.get(i)) {
+                        best10resultsMedium.add(i, resultTime);
+                        best10resultsMedium.remove(10);  // drop last result
+                        break;  // stop to search in the scores list
+                    }
+                    // else -> the for loop keeps search if the new result is in the best 10.
+                }
+                break;
+            case HARD:
+                for (i=0;i<NUM_OF_RESULTS;i++){
+                    if (resultTime < best10resultsHard.get(i)) {
+                        best10resultsHard.add(i, resultTime);
+                        best10resultsHard.remove(10);  // drop last result
+                        break;  // stop to search in the scores list
+                    }
+                    // else -> the for loop keeps search if the new result is in the best 10.
+                }
                 break;
         }
     }

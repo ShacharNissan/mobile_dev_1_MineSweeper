@@ -13,10 +13,9 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.shacharnissan.minesweeper.logic.DifficultyEnum;
-import com.shacharnissan.minesweeper.logic.Score;
 
-import java.util.List;
 import java.util.concurrent.TimeUnit;
+
 
 public class StartActivity extends AppCompatActivity {
     private Button btn_start;
@@ -51,10 +50,6 @@ public class StartActivity extends AppCompatActivity {
         getSupportFragmentManager().beginTransaction().replace(R.id.start_activity,highScoresFragment).commit();
         btn_start.setVisibility(View.INVISIBLE);
         btn_highest_score.setVisibility(View.INVISIBLE);
-    }
-
-    private void saveScoresToFragment() {
-
     }
 
     @Override

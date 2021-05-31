@@ -1,6 +1,7 @@
 package com.shacharnissan.minesweeper;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -11,26 +12,23 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.shacharnissan.minesweeper.logic.DifficultyEnum;
+import com.shacharnissan.minesweeper.logic.FileHelper;
 import com.shacharnissan.minesweeper.logic.Score;
 import com.shacharnissan.minesweeper.logic.Utils;
 
-import org.w3c.dom.Text;
-
+import java.io.File;
 import java.lang.reflect.Type;
 import java.util.List;
-
 
 public class HighScoresFragment extends Fragment {
 
     private Button back_btn;
-    private Context contextRefference;
-    private View viewRefference;
+    private Context contextReference;
+    private View viewReference;
 
     private List<Score> scores;
 
@@ -52,62 +50,47 @@ public class HighScoresFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         Log.d("fragment", "onCreate");
         super.onCreate(savedInstanceState);
-        contextRefference = getContext();
+        contextReference = getContext();
     }
 
     private void closeHighestScoreFragment() {
-        // TODO
+        getActivity().onBackPressed();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.d("fragment", "onCreateView");
         // Inflate the layout for this fragment
-        viewRefference = inflater.inflate(R.layout.fragment_high_scores, container, false);
-        back_btn  = viewRefference.findViewById(R.id.back_btn);
+        viewReference = inflater.inflate(R.layout.fragment_high_scores, container, false);
+        back_btn  = viewReference.findViewById(R.id.back_btn);
         back_btn.setOnClickListener(v -> closeHighestScoreFragment());
 
         loadHighestScoresFromFile();
 
-        return viewRefference;
+        return viewReference;
     }
 
     private void loadHighestScoresFromFile() {
         Log.d("fragment", "loadHighestScoresFromFile");
-        String jsonFileString = Utils.getJsonFromAssets(contextRefference, "highest_scores_json.json");
-//        Log.i("data", jsonFileString);
+        String filename = getResources().getString(R.string.Scores_Json_File);
+        SharedPreferences sharedPref = contextReference.getSharedPreferences(filename,Context.MODE_PRIVATE);
+        String jsonFileString = sharedPref.getString(getString(R.string.Scores_Json_String),
+                                Utils.getJsonFromAssets(contextReference, "template_scores_json.json"));
         Gson gson = new Gson();
-        Type listUserType = new TypeToken<List<Score>>() {}.getType();
-        scores = gson.fromJson(jsonFileString, listUserType);
-        /*
-        for (int i = 0; i < scores.size(); i++) {
-            Log.i("data", "> Item " + i + "\n" + scores.get(i));
-        }
-        */
+        Type listScoreType = new TypeToken<List<Score>>() {}.getType();
+        scores = gson.fromJson(jsonFileString, listScoreType);
     }
 
     private void saveScoresToFragmentTable() {
         int viewId;
         String idName;
         TextView tv;
-
         for (int i = 0; i < scores.size(); i++)
         {
-            idName = "row" + scores.get(i).getPlace();
-            Log.d("idName", ""+ idName);
-
-            viewId = getResources().getIdentifier(idName, "id", contextRefference.getPackageName());
-
-            Log.d("viewId ",viewId + "");
-            Log.d("viewTag","" + scores.get(i).getDifficulty());
-            Log.d("newText", "" + scores.get(i).getTimeScore());
-
-            tv = (TextView)viewRefference.findViewById(viewId).findViewWithTag(scores.get(i).getDifficulty());
-
-            // TODO : ...
-
-           // tv.setText(scores.get(i).getTimeScore());
-            //((TextView)viewRefference.findViewById(viewId).findViewWithTag(scores.get(i).getDifficulty())).setText(scores.get(i).getTimeScore());
+            idName = "row" + scores.get(i).getPlace();  //  the text "row"+index is by the id-names in the fragment layout
+            viewId = getResources().getIdentifier(idName, "id", contextReference.getPackageName());
+            tv = (TextView) viewReference.findViewById(viewId).findViewWithTag(scores.get(i).getStringDifficulty());
+            tv.setText(scores.get(i).getTimeScore());
         }
     }
 
@@ -123,7 +106,6 @@ public class HighScoresFragment extends Fragment {
         super.onDestroy();
         Log.d("fragment", "onDestroy");
     }
-
 
     public List<Score> getScores() {
         return scores;
