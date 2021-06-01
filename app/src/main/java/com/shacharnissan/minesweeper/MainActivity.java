@@ -149,6 +149,7 @@ public class MainActivity extends AppCompatActivity {
         myIntent.putExtra(""+String.format("%d", R.string.time_tag), ""+game.getResultTime());
         myIntent.putExtra(""+String.format("%d", R.string.diff_tag) , ""+game.getDifficulty());
         // myIntent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+        MainActivity.this.finish();
         MainActivity.this.startActivity(myIntent);
     }
 

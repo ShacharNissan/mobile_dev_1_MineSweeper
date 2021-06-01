@@ -65,6 +65,7 @@ public class EndActivity extends AppCompatActivity {
         Intent myIntent = new Intent(EndActivity.this, MainActivity.class);
         myIntent.putExtra(key,value); //Optional parameters
         // myIntent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+        EndActivity.this.finish();
         EndActivity.this.startActivity(myIntent);
     }
 
